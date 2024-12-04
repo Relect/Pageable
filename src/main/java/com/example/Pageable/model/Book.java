@@ -21,4 +21,11 @@ public class Book {
     private Long id;
     private String name;
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

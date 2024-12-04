@@ -24,6 +24,7 @@ public class Controller {
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBook(@PathVariable long id) throws BookNotFoundException {
+        System.out.println(service.getBook(id));
         return ResponseEntity.ok(service.getBook(id));
 
     }
