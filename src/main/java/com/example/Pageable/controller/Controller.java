@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/book")
@@ -21,11 +24,20 @@ public class Controller {
 
     @GetMapping
     @JsonView(Book.Summary.class)
-    public ResponseEntity<Page<Book>> getBooks(@RequestParam(defaultValue = "0", required = false) int page,
+    public ResponseEntity<Map<String , Object>> getBooks(@RequestParam(defaultValue = "0", required = false) int page,
                                @RequestParam(defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Book> page1 = service.getBooks(pageable);
-        return ResponseEntity.ok(page1);
+        Page<Book> booksPage = service.getBooks(pageable);
+
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", booksPage.getContent());
+        response.put("totalPages", booksPage.getTotalPages());
+        response.put("totalElements", booksPage.getTotalElements());
+        response.put("currentPage", booksPage.getNumber());
+        response.put("pageSize", booksPage.getSize());
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
