@@ -1,5 +1,6 @@
 package com.example.Pageable.controller;
 
+import com.example.Pageable.exception.BookNotFoundException;
 import com.example.Pageable.model.Book;
 import com.example.Pageable.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,9 @@ public class Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBook(@PathVariable long id) {
-        return service.getBook(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Book> getBook(@PathVariable long id) throws BookNotFoundException {
+        return ResponseEntity.ok(service.getBook(id));
+
     }
 
     @PostMapping

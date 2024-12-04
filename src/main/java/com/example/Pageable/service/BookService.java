@@ -1,5 +1,6 @@
 package com.example.Pageable.service;
 
+import com.example.Pageable.exception.BookNotFoundException;
 import com.example.Pageable.model.Book;
 import com.example.Pageable.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ public class BookService {
         return bookRepository.findAll(pageable);
     }
 
-    public Optional<Book> getBook(long id) {
-        return bookRepository.findById(id);
+    public Book getBook(long id) throws BookNotFoundException {
+        return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
     }
 
     public Book updateBook(Book book) {
